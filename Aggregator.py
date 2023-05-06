@@ -14,7 +14,8 @@ with requests.Session() as s:
             body = { 'scan_clause': clause}
             response = s.post('https://chartink.com/screener/process', data=body).json()
             nsecodes = list(map(lambda x: x["nsecode"], response["data"]))
-            for name in nsecodes:
+            for code in nsecodes:
+                name = code.replace("&", "_") # Added for TradingView Support
                 f.write(f'{name}, \n')
 
     f.close()
