@@ -1,27 +1,22 @@
-INSIDEBAR = '( {cash} ( latest close >= latest max( 250 , latest high ) * 0.75 and latest close >= latest min( 250 , latest low ) * 1.3 and latest sma( latest volume , 20 ) * latest close >= 30000000 and latest high < 1 day ago high and latest low > 1 day ago low and latest close >= latest sma( latest close , 50 ) ) )'
-DOUBLEINSIDEBAR = '( {cash} ( latest close >= latest max( 250 , latest high ) * 0.75 and latest close >= latest min( 250 , latest low ) * 1.3 and latest sma( latest volume , 20 ) * latest close >= 30000000 and latest close >= latest sma( latest close , 50 ) and latest high < 2 days ago high and 1 day ago high < 2 days ago high and latest low > 2 days ago low and 1 day ago low > 2 days ago low ) )'
-TIGHTCLOSETHREEDAY = '( {cash} ( ( {cash} ( latest sma( latest volume , 20 ) * latest close >= 30000000 and latest close >= latest max( 250 , latest high ) * 0.75 and latest close >= latest min( 250 , latest low ) * 1.3 and latest close >= latest sma( latest close , 50 ) and latest close <= 1 day ago close * 1.01 and latest close >= 1 day ago close * .99 and 1 day ago close <= 2 days ago close * 1.01 and 1 day ago close >= 2 days ago close * .99 and 2 days ago close <= 3 days ago close * 1.01 and 2 days ago close >= 3 days ago close * .99 ) ) ) )'
+ANT = '( {cash} ( latest sma( latest volume , 20 ) * latest close >= 30000000 and latest "close - 1 candle ago close / 1 candle ago close * 100" <= .5 and latest "close - 1 candle ago close / 1 candle ago close * 100" >= -.5 and latest close >= latest max( 250 , latest close ) * 0.75 and latest close >= latest min( 250 , latest close ) * 1.3 and latest close >= latest sma( latest close , 50 ) ) ) '
+TURNOVER = '( {cash} ( latest {custom_indicator_97318_start}"vwap *  volume"{custom_indicator_97318_end} >= latest ema( latest {custom_indicator_97318_start}"vwap *  volume"{custom_indicator_97318_end} , 20 ) * 3 and latest close > 10 and latest close <= 5000 and market cap >= 300 and latest {custom_indicator_59995_start}"(  sma(  close , 50 ) *  sma(  volume , 50 ) ) / 10000000"{custom_indicator_59995_end} >= 5 and latest sma( latest volume , 20 ) * latest close >= 30000000 ) )'
 
-WEEKLYINSIDEBAR = '( {cash} ( weekly high < 1 week ago high and weekly low > 1 week ago low and latest sma( latest volume , 20 ) * latest close >= 30000000 and latest close >= latest sma( latest close , 100 ) and latest close >= latest max( 250 , latest high ) * 0.75 and latest close >= latest min( 250 , latest low ) * 1.3 ) ) '
-TWOWEEKLYINSIDEBAR = '( {cash} ( latest close >= latest max( 250 , latest high ) * 0.75 and latest close >= latest min( 250 , latest low ) * 1.3 and latest sma( latest volume , 20 ) * latest close >= 30000000 and latest close >= latest sma( latest close , 100 ) and weekly high < 2 weeks ago high and 1 week ago high < 2 weeks ago high and weekly low > 2 weeks ago low and 1 week ago low > 2 weeks ago low ) )'
-
-#Stocks that moved 30 percent in a month
-ONEMONTHGAINERS = '( {cash} ( latest sma( latest volume , 20 ) * latest close >= 20000000 and latest max( 22 , latest close ) >= latest min( 22 , latest open ) * 1.30 and latest close >= latest sma( latest close , 20 ) ) )'
-
-#Stocks that moved 80 percent in 8 week
-POWERPLAYS = '( {cash} ( ( {cash} ( latest high >= weekly min( 8 , weekly low ) * 1.8 and latest high > 20 and latest high <= 25000 and latest sma( latest volume , 20 ) * latest close >= 30000000 ) ) ) )'
-
-#Stocks 10% down in 4 Days
-DOWN_10 = '( {cash} ( ( {cash} ( latest sma( latest volume , 20 ) * latest close >= 30000000 and latest close <= 4 days ago close * 0.90 ) ) ) )'
+BIGMOVERS = '( {cash} ( latest sma( latest volume , 20 ) * latest close >= 40000000 and latest close - 1 day ago close >= 1 day ago avg true range( 14 ) * 2 and latest volume >= latest sma( latest volume , 20 ) * 2 ) )'
+TEN_DECLINE_5DAYS = '( {cash} ( latest sma( latest volume , 20 ) * latest close >= 40000000 and latest close <= 5 days ago close * 0.80 ) )'
 
 #Deep Dive Study screeners
-TWENTY_5DAYS = '( {cash} ( latest sma( latest volume , 20 ) * latest close >= 30000000 and latest close >= 5 days ago close * 1.2 ) )'
-FIFTY_40DAYS = '( {cash} ( latest sma( latest volume , 20 ) * latest close >= 30000000 and latest close >= 40 days ago close * 1.5 ) )'
+FIFTEEN_5DAYS = '( {cash} ( latest sma( latest volume , 20 ) * latest close >= 30000000 and latest close >= 5 days ago close * 1.2 ) )'
+FIFTY_40DAYS = '( {cash} ( latest sma( latest volume , 20 ) * latest close >= 40000000 and latest close >= 40 days ago close * 1.5 ) )'
+TRIPLED_252DAYS = '( {cash} ( latest max( 126 , latest high ) / latest min( 126 , latest close ) >= 3.0 and latest sma( latest volume , 20 ) * latest close >= 30000000 and latest close > 30 ) )'
+
+IPOBASES = '( {cash} ( ( {cash} not( 12 months ago close > 0 ) ) and latest "close - 1 candle ago close / 1 candle ago close * 100" < 1 and latest "close - 1 candle ago close / 1 candle ago close * 100" > -1 and latest volume * latest close >= 10000000 and market cap > 100 ) )'
 
 clauses = {
-    'DAILY INSIDEBAR': [ INSIDEBAR, DOUBLEINSIDEBAR, TIGHTCLOSETHREEDAY ],
-    'WEEKLY INSIDEBARS': [WEEKLYINSIDEBAR, TWOWEEKLYINSIDEBAR],
-    'REVERSALS' : [DOWN_10],
-    '20% IN 5 DAYS' : [TWENTY_5DAYS],
-    '50% IN 40 DAYS' : [FIFTY_40DAYS]
+    'BIG MOVERS': [BIGMOVERS],
+    'REVERSALS': [TEN_DECLINE_5DAYS],
+    'MONEYFLOW': [FIFTEEN_5DAYS],
+    'DEEPDIVE' : [FIFTY_40DAYS],
+    'IPO' : [IPOBASES],
+    'ANT' : [ANT],
+    'STOCKS IN PLAY' : [TURNOVER]
 }
