@@ -18,6 +18,6 @@ with requests.Session() as s:
         for code in set(nsecodes):
             name = code.replace("&", "_") # Added for TradingView Support
             name = name.replace("-", "_") # Added for TradingView Support
-            f.write(f'{name}, \n')
+            f.write(f'NSE:{name}, \n')
 
     f.close()
