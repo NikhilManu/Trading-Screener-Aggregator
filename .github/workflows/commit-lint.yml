@@ -1,34 +1,35 @@
 name: Commit Message Validation
-
 on:
   pull_request:
-    types: [opened, edited, synchronize]  # Triggers when a PR is opened, edited, or synchronized (new commits)
+    types: [opened, edited, synchronize]
 
 jobs:
   validate-commit-message:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Fetch all history for all branches and tags
+
+    - name: Get default branch name
+      run: echo "DEFAULT_BRANCH=$(git remote show origin | grep 'HEAD branch' | cut -d' ' -f5)" >> $GITHUB_ENV
 
     - name: Validate commit messages
       run: |
         # Get all commit messages in the PR
-        commit_messages=$(git log origin/main..HEAD --pretty=format:%s)
+        commit_messages=$(git log origin/${{ env.DEFAULT_BRANCH }}..HEAD --pretty=format:%s)
         
         # Define the regex pattern
         regex="^RP-[0-9]+: [A-Z][a-zA-Z0-9 ,.'\"-]+$"
         
         # Iterate over each commit message
-        for commit_msg in $commit_messages; do
+        while IFS= read -r commit_msg; do
           if [[ ! "$commit_msg" =~ $regex ]]; then
             echo "Invalid commit message: '$commit_msg'"
             echo "Commit message should be in the format: 'RP-{Task Id}: {Commit Message}.'"
             exit 1
           fi
-        done
-
-    - name: Success message
-      if: success()
-      run: echo "All commit messages are valid!"
+        done <<< "$commit_messages"
+        
+        echo "All commit messages are valid!"
