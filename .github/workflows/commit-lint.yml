@@ -18,8 +18,8 @@ jobs:
     - name: Validate commit messages
       run: |
         # Get all commit messages in the PR
-        # commit_messages=$(git log origin/${{ env.DEFAULT_BRANCH }}..HEAD --pretty=format:%s)
-        commit_messages=$(git log origin/${{ env.DEFAULT_BRANCH }}..HEAD --no-merges --pretty=format:%s)
+        # commit_messages=$(git log origin/${{ env.DEFAULT_BRANCH }}..HEAD --no-merges --pretty=format:%s)
+        commit_messages=$(git log ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} --no-merges --pretty=format:%s)
         
         # Define the regex pattern
         regex="^RP-[0-9]+: [A-Z][a-zA-Z0-9 ,.'\"-]+$"
