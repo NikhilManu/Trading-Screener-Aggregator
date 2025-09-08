@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup as bs
 from config import clauses
 
 with requests.Session() as s:
-    r = s.get('https://chartink.com/')
+    r = s.get("https://chartink.com/screener")
     soup = bs(r.content, 'html.parser')
     s.headers['X-CSRF-TOKEN'] = soup.select_one('[name=csrf-token]')['content']
 
