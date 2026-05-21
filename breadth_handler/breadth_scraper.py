@@ -30,8 +30,8 @@ def get_data():
         params = {
             "query": QUERY,
             "use_live": "1",
-            "limit": "100",
-            "size": "100",
+            "limit": "6",
+            "size": "375",
             "widget_id": "2723959",
             "debug_clause": "groupcount(1 where daily close > 0)",
         }
