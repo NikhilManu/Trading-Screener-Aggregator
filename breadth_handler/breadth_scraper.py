@@ -32,8 +32,7 @@ def get_data():
             "use_live": "1",
             "limit": "6",
             "size": "375",
-            "widget_id": "2723959",
-            "debug_clause": "groupcount(1 where daily close > 0)",
+            "widget_id": "2723959"
         }
 
         body = urllib.parse.urlencode(params)
@@ -45,8 +44,8 @@ def get_data():
 def _format_line(ts: int, tz: timezone, merged: dict, idx: int) -> str:
     date = datetime.fromtimestamp(ts / 1000, tz=tz).strftime("%Y-%m-%d")
     return (
-        f"date={date}, e20={merged['e20'][idx]}%, u2={merged['u2'][idx]}, "
-        f"d2={merged['d2'][idx]}, w10={merged['w10'][idx]}, universe={merged['universe'][idx]}\n"
+        f"date={date}, e20={merged['e20'][idx]}%, u4={merged['u4'][idx]}, "
+        f"d4={merged['d4'][idx]}, w20={merged['w20'][idx]}, universe={merged['universe'][idx]}\n"
     )
 
     
