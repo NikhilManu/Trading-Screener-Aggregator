@@ -44,7 +44,7 @@ def get_data():
 def _format_line(ts: int, tz: timezone, merged: dict, idx: int) -> str:
     date = datetime.fromtimestamp(ts / 1000, tz=tz).strftime("%Y-%m-%d")
     return (
-        f"date={date}, e20={merged['e20'][idx]}%, u4={merged['u4'][idx]}, "
+        f"date={date}, mr20={merged['mr20'][idx]}%, u4={merged['u4'][idx]}, "
         f"d4={merged['d4'][idx]}, w20={merged['w20'][idx]}, universe={merged['universe'][idx]}\n"
     )
 
@@ -58,5 +58,5 @@ if __name__ == "__main__":
     tz = timezone(timedelta(hours=5, minutes=30))
 
     with open("Output/breadth.txt", "w") as f:
-        for i in reversed(range(len(merged["e20"]))):
+        for i in reversed(range(len(merged["mr20"]))):
             f.write(_format_line(timestamps[i], tz, merged, i))

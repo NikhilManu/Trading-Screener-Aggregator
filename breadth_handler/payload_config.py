@@ -4,7 +4,7 @@ WIDGET_URL = "https://chartink.com/widget/process"
 
 QUERY = (
     "select groupcount({cash} 1 where daily close > daily ema(daily close, 20))"
-    " / groupcount({cash} 1) * 100 as 'E20',"
+    " / groupcount({cash} 1) * 100 as 'MR20',"
     " groupsum({cash} Daily \"close - 1 candle ago close / 1 candle ago close * 100\" >= 4"
     " where daily volume > 1 day ago volume) as 'U4',"
     " groupsum({cash} Daily \"close - 1 candle ago close / 1 candle ago close * 100\" <= -4"
