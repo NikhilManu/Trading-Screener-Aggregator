@@ -31,7 +31,7 @@ def get_data():
             "query": QUERY,
             "use_live": "1",
             "limit": "6",
-            "size": "375",
+            "size": "3000",
             "widget_id": "2723959"
         }
 
